@@ -316,12 +316,17 @@ Final Results:
 
 
 
-# Author
+# Authors
 
 **Jyoti Kumari**
-
 B.Tech Artificial Intelligence & Machine Learning
 Indira Gandhi Delhi Technical University for Women (IGDTUW)
 02601192025
+
+**Mahima Jha**
+B.Tech Artificial Intelligence & Machine Learning
+Indira Gandhi Delhi Technical University for Women (IGDTUW)
+03801192025
+
 
 ---
