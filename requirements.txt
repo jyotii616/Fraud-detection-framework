@@ -83,7 +83,7 @@ six==1.17.0
 slicer==0.0.8
 smmap==5.0.3
 stack-data==0.6.3
-streamlit==1.38.0
+streamlit>=1.38.0
 tenacity==8.5.0
 tensorflow>=2.21.0
 termcolor==3.3.0
