@@ -1,0 +1,2 @@
+EARLY-WARNING MODEL (trained on 'fraud in next 10 transactions', not on same-transaction isFraud)
+AUC=0.8112  Precision=0.3928  Recall=0.6247  F1=0.4823  MCC=0.3768

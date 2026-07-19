@@ -1,0 +1,19 @@
+MODEL 1 - REAL-TIME TRANSACTION CLASSIFIER (trained on isFraud)
+Optimized threshold: 0.6200
+AUC=0.9586  Precision=0.5504  Recall=0.7431  F1=0.6324  MCC=0.6248
+
+Confusion matrix:
+[[111577   2467]
+ [  1044   3020]]
+
+              precision    recall  f1-score   support
+
+           0       0.99      0.98      0.98    114044
+           1       0.55      0.74      0.63      4064
+
+    accuracy                           0.97    118108
+   macro avg       0.77      0.86      0.81    118108
+weighted avg       0.98      0.97      0.97    118108
+
+
+MODEL 1's early-warning correlation check (probability vs whether fraud occurs in the NEXT 10 transactions): AUC=0.7093
