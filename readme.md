@@ -64,7 +64,7 @@ JML/
 
 The proposed framework consists of five complementary layers.
 
-### Layer 1 — Temporal Behavioral Intelligence
+### Layer 1  Temporal Behavioral Intelligence
 
 Captures how user behavior evolves over time.
 
@@ -81,7 +81,7 @@ Features include:
 
 ---
 
-### Layer 2 — Dynamic Social Graph Intelligence
+### Layer 2  Dynamic Social Graph Intelligence
 
 Builds a transaction graph connecting users through shared devices, IP addresses, emails, and other relationships.
 
@@ -97,7 +97,7 @@ Graph features include:
 
 ---
 
-### Layer 3 — Behavioral Device Trust
+### Layer 3 Behavioral Device Trust
 
 Instead of treating devices as fixed identifiers, the framework estimates evolving device reliability using historical behavior.
 
@@ -112,7 +112,7 @@ Features include:
 
 ---
 
-### Layer 4 — Sequential Behavior Modeling
+### Layer 4 Sequential Behavior Modeling
 
 Customer behavior is modeled as a sequence rather than isolated events.
 
@@ -125,7 +125,7 @@ Sequence features include:
 
 ---
 
-### Layer 5 — Hybrid Anomaly Detection
+### Layer 5 Hybrid Anomaly Detection
 
 Detects suspicious activity that supervised models may not recognize.
 
@@ -268,17 +268,59 @@ The project generates comprehensive evaluation artifacts including:
 
 ---
 Final Results:
+## Model 1  Real-Time Transaction Classifier
+*(trained on `isFraud`, flags fraud at the moment of the transaction)*
 
-AUC = 0.9588
-Precision = 0.5785
-Recall = 0.7365
-F1 Score = 0.6480
+| Metric | Value |
+|---|---|
+| AUC | 0.9586 |
+| Precision | 0.5504 |
+| Recall | 0.7431 |
+| F1 Score | 0.6324 |
+| MCC | 0.6248 |
+| Optimized Threshold | 0.62 |
+| Overall Accuracy | 0.97 |
+
+**Confusion Matrix** (on 118,108 test transactions):
+- True Positives (fraud caught): 3,020
+- False Negatives (fraud missed): 1,044
+- False Positives (false alarms): 2,467
+- True Negatives: 111,577
+
+## Model 2 Early-Warning Model
+*(trained to predict fraud in the next 10 transactions, before it happens)*
+
+| Metric | Value |
+|---|---|
+| AUC | 0.8112 |
+| Precision | 0.3928 |
+| Recall | 0.6247 |
+| F1 Score | 0.4823 |
+| MCC | 0.3768 |
+
+## Comparison vs Baselines
+| Model | AUC | F1 | MCC |
+|---|---|---|---|
+| Logistic Regression | 0.8269 | 0.1567 | 0.1946 |
+| Random Forest | 0.8740 | 0.2999 | 0.3187 |
+| XGBoost (raw features only) | 0.9069 | 0.3303 | 0.3598 |
+| **Full Framework (This Model)** | **0.9586** | **0.5545** | **0.5629** |
+
+## Ablation Study Feature Layer Contributions
+| Configuration | # Features | AUC | F1 | MCC |
+|---|---|---|---|---|
+| Raw only | 281 | 0.9102 | 0.3942 | 0.4062 |
+| + Temporal | 295 | 0.9571 | 0.5352 | 0.5453 |
+| + Temporal + Graph | 306 | 0.9574 | 0.5446 | 0.5523 |
+| Full Model (+ Device Trust + Sequence + Anomaly) | 327 | 0.9586 | 0.5545 | 0.5629 |
+
+
+
 # Author
 
 **Jyoti Kumari**
 
 B.Tech Artificial Intelligence & Machine Learning
-
 Indira Gandhi Delhi Technical University for Women (IGDTUW)
 02601192025
 
