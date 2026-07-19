@@ -55,7 +55,7 @@ numba>=0.66.0
 numpy>=1.26.4
 opt_einsum==3.4.0
 optree==0.19.1
-packaging==26.2
+packaging
 pandas>=2.2.2
 parso==0.8.7
 pillow==10.4.0
