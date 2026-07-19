@@ -22,9 +22,7 @@ import numpy as np
 import pandas as pd
 import networkx as nx
 
-# ---------------------------------------------------------------------------
-# Constants - must match the values in fraud_detection.ipynb (cell "PARAMETERS")
-# ---------------------------------------------------------------------------
+
 BATCH_SIZE = 50_000
 PAGERANK_EVERY_N_BATCHES = 3
 ENABLE_EXPENSIVE_CENTRALITY = False
@@ -43,9 +41,7 @@ def log(msg):
     print(f"[{time.strftime('%H:%M:%S')}] {msg}")
 
 
-# ---------------------------------------------------------------------------
-# Validation / artifact loading
-# ---------------------------------------------------------------------------
+
 def validate_required_columns(df):
     """Returns a list of required raw columns that are missing from df."""
     return [c for c in REQUIRED_COLUMNS if c not in df.columns]
@@ -57,9 +53,7 @@ def load_encoders(path):
         return json.load(f)
 
 
-# ---------------------------------------------------------------------------
-# LAYER 1: temporal behavioral features (copied verbatim from the notebook)
-# ---------------------------------------------------------------------------
+
 def add_temporal_features(df):
     log("Building Layer 1: expanded temporal features (point-in-time)...")
     grouped = df.groupby("card1")
@@ -133,11 +127,7 @@ def add_temporal_features(df):
     else:
         df["channel_switch_rate_5"] = 0.0
 
-    # isFraud is unknown for the row(s) actually being scored right now (that's what
-    # we're predicting), but is known for *past, already-resolved* rows in the same
-    # upload. Only past rows feed this feature (via shift(1)/ffill), so a row never
-    # sees its own label here - see run_feature_pipeline() below for how isFraud
-    # is populated before this function runs.
+   
     fraud_time = df["TransactionDT"].where(df["isFraud"] == 1)
     last_fraud_time = grouped.apply(
         lambda g: fraud_time.loc[g.index].shift(1).ffill()
@@ -147,9 +137,7 @@ def add_temporal_features(df):
     return df
 
 
-# ---------------------------------------------------------------------------
-# LAYER 2: dynamic social graph features (copied verbatim from the notebook)
-# ---------------------------------------------------------------------------
+
 def add_dynamic_graph_features(df):
     log("Building Layer 2: dynamic social graph features (batched)...")
 
@@ -342,9 +330,7 @@ def add_dynamic_graph_features(df):
     return df
 
 
-# ---------------------------------------------------------------------------
-# LAYER 3: dynamic device trust score (copied verbatim from the notebook)
-# ---------------------------------------------------------------------------
+
 def add_device_trust_features(df):
     log("Building Layer 3: dynamic device trust score (point-in-time, single-pass)...")
 
@@ -418,9 +404,7 @@ def add_device_trust_features(df):
     return df
 
 
-# ---------------------------------------------------------------------------
-# Sequence model support (copied verbatim from the notebook's build_sequences)
-# ---------------------------------------------------------------------------
+
 def _build_sequences(df, cols, seq_len):
     values = df[cols].values.astype(np.float32)
     card_ids = df["card1"].values
@@ -461,9 +445,7 @@ def _add_risk_trend_features(X):
     return X
 
 
-# ---------------------------------------------------------------------------
-# Public pipeline entry points used by app.py
-# ---------------------------------------------------------------------------
+
 def run_feature_pipeline(raw_df):
     """
     Runs Layers 1-3 (temporal, graph, device-trust) on newly-uploaded
@@ -498,9 +480,7 @@ def _encode_categoricals(X, encoders, cat_cols):
             X[col] = "missing"
         X[col] = X[col].fillna("missing").astype(str)
         mapping = encoders.get(col, {})
-        # Any category never seen during training (including "missing" itself,
-        # if it never appeared in training) gets one shared fallback bucket
-        # rather than crashing or silently colliding with a real class.
+       
         unseen_idx = len(mapping)
         X[col] = X[col].map(lambda v: mapping.get(v, unseen_idx)).astype(int)
     return X
@@ -522,7 +502,7 @@ def preprocess_for_inference(engineered_df, encoders, cat_cols, feature_list, mo
     num_cols = X.select_dtypes(include=[np.number]).columns.tolist()
     X[num_cols] = X[num_cols].fillna(-999)
 
-    # --- sequence model (LSTM) ---
+   
     seq_cols_path = os.path.join(model_dir, "seq_feature_cols.json")
     seq_cfg_path = os.path.join(model_dir, "seq_config.json")
     lstm_path = os.path.join(model_dir, "lstm_sequence_model.keras")
@@ -549,7 +529,7 @@ def preprocess_for_inference(engineered_df, encoders, cat_cols, feature_list, mo
 
     X = _add_risk_trend_features(X)
 
-    # --- anomaly detection (Isolation Forest + autoencoder) ---
+   
     anomaly_cols_path = os.path.join(model_dir, "anomaly_cols.json")
     anomaly_cols = None
     if os.path.exists(anomaly_cols_path):
@@ -581,7 +561,7 @@ def preprocess_for_inference(engineered_df, encoders, cat_cols, feature_list, mo
     else:
         X["autoencoder_score"] = 0.0
 
-    # --- final alignment to the exact training-time feature list/order ---
+   
     for col in feature_list:
         if col not in X.columns:
             X[col] = -999
