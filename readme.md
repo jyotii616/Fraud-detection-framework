@@ -1,5 +1,8 @@
 # Three-Layer Fraud Detection Framework
 
+🔗 **Live App:** [https://finxai.streamlit.app/](https://finxai.streamlit.app/)
+📂 **GitHub Repo:** [https://github.com/jyotii616/Fraud-detection-framework](https://github.com/jyotii616/Fraud-detection-framework)
+
 Dataset:
 IEEE-CIS Fraud Detection Dataset
 train_transcation.csv
@@ -21,11 +24,13 @@ This project presents a **Dynamic Multi-Layer Fraud Detection Framework** that c
 ```
 JML/
 │
-├── images/                          
+├── .streamlit/
+│   └── config.toml                  # App configuration (upload size, etc.)
 ├── models/                          
 ├── outputs/                         
 │   ├── ablation_study.csv
 │   ├── baseline_comparison.csv
+│   ├── best_hyperparameters.json
 │   ├── cv_fold_metrics.csv
 │   ├── cv_summary.csv
 │   ├── dormancy_risk_projection.png
@@ -34,6 +39,8 @@ JML/
 │   ├── feature_importance.png
 │   ├── feature_importance_shap_ranking.csv
 │   ├── metrics_final_model.txt
+│   ├── model_early_warning.json
+│   ├── model_xgboost.json
 │   ├── pr_curve.png
 │   ├── risk_evolution_example.png
 │   ├── roc_curve.png
@@ -42,9 +49,11 @@ JML/
 │   └── threshold_comparison.csv
 │
 ├── fraud_detection.ipynb            # Complete implementation
+├── preprocessing.py                 # Preprocessing pipeline
 ├── app.py                           # Deployment script
 ├── README.md
 ├── requirements.txt
+├── runtime.txt                      # Python version for deployment
 ├── train_identity.csv
 └── train_transaction.csv
 ```
@@ -274,5 +283,3 @@ Indira Gandhi Delhi Technical University for Women (IGDTUW)
 02601192025
 
 ---
-
-
